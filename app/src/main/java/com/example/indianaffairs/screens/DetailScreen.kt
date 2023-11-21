@@ -1,8 +1,10 @@
 package com.example.indianaffairs.screens
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
@@ -15,11 +17,24 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.rememberAsyncImagePainter
 import com.example.indianaffairs.ViewModels.DetailsViewModel
 import com.example.indianaffairs.models.NewsItem
 
 @Composable
-fun NewsListItem(headline:String,source:String){
+fun DetailScreen(){
+    val detailsViewModel : DetailsViewModel = hiltViewModel()
+    val news = detailsViewModel.news.collectAsState()
+    LazyColumn(content = {
+        items(news.value){
+            NewsListItem(headline = it.title, source = it.sourceName, imageurl = it.image)
+        }
+    })
+}
+
+
+@Composable
+fun NewsListItem(headline:String,source:String, imageurl:String){
 
     Card(
         modifier = Modifier
@@ -27,6 +42,10 @@ fun NewsListItem(headline:String,source:String){
             .padding(16.dp),
         border = BorderStroke(1.dp, Color(0xFFCCCCCC)),
         content = {
+
+            Image(painter = rememberAsyncImagePainter(imageurl),
+                contentDescription =null,
+                modifier = Modifier.size(128.dp))
             Text(text = headline,
                 modifier = Modifier.padding(16.dp,16.dp,16.dp,8.dp),
                 style = MaterialTheme.typography.bodyMedium)
@@ -37,15 +56,5 @@ fun NewsListItem(headline:String,source:String){
 
 }
 
-@Composable
-fun DetailScreen(){
-    val detailsViewModel : DetailsViewModel = hiltViewModel()
-    val news = detailsViewModel.news.collectAsState()
-    LazyColumn(content = {
-        items(news.value){
-            NewsListItem(headline = it.title, source = it.sourceName)
-        }
-    })
-}
 
 
