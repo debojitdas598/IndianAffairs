@@ -34,9 +34,7 @@ fun CategoryScreen(onClick: (category: String) -> Unit){
 
     val categories : State<List<String>> = remember {
         mutableStateOf(
-            listOf("sport","world","business",
-                "economy","science","technology","health","education",
-                "art","entertainment","travel")
+            listOf("sport","world","business","science_and_technology","education","entertainment","health","travel")
         )
     }
     LazyVerticalGrid(columns = GridCells.Fixed(2), contentPadding = PaddingValues(8.dp),
